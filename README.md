@@ -1,6 +1,8 @@
 Rubic: https://stthomas.instructure.com/courses/86777/files/11732922?wrap=1
 
-What kind of game are we making?
+What kind of game are we making? 
+Interactive Fantasy Game that incorporates quizzes and point & click aspects
+With stages of difficulty
 
 What do we hope to implement?
 - DOM manipulation
@@ -10,5 +12,6 @@ What do we hope to implement?
 
 What are our roles?
 - Alex: Pixel art
-- UI Design
-- Back End HTML
+- Destin: UI Design
+- Ashley: Back End HTML
+- James: Accessibility and Review
