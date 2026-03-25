@@ -12,37 +12,37 @@
     <!-- Start Screen -->
     <div id="start-screen" class="screen active">
         <h1>🧙 Quizzard Adventure</h1>
-        <p>Embark on a journey of knowledge...</p>
-        <button id="start-btn">Start Adventure</button>
+        <button id="start-btn">Start Game</button>
+    </div>
+
+    <!-- Difficulty Screen -->
+    <div id="difficulty-screen" class="screen">
+        <h2>Select Difficulty</h2>
+        <button class="difficulty-btn" data-level="easy">Easy</button>
+        <button class="difficulty-btn" data-level="medium">Medium</button>
+        <button class="difficulty-btn" data-level="hard">Hard</button>
     </div>
 
     <!-- Game Screen -->
     <div id="game-screen" class="screen">
-        
-        <!-- Story Text -->
-        <div id="story-box">
-            <p id="story-text">
-                You enter a mysterious forest. A glowing door appears...
-            </p>
+
+        <!-- Progress Bar -->
+        <div id="progress-container">
+            <div id="progress-bar"></div>
         </div>
 
-        <!-- Choices -->
-        <div id="choices">
-            <button class="choice-btn">Open the door</button>
-            <button class="choice-btn">Walk away</button>
-        </div>
+        <p id="progress-text">Question 1 / 5</p>
 
-        <!-- Quiz Section (hidden at first) -->
-        <div id="quiz-box" class="hidden">
-            <p id="question">What is 2 + 2?</p>
-            <button class="answer-btn">3</button>
-            <button class="answer-btn">4</button>
-            <button class="answer-btn">5</button>
-        </div>
+        <!-- Question -->
+        <h2 id="question">Question goes here</h2>
 
-        <!-- UI Info -->
+        <!-- Answers -->
+        <div id="answers"></div>
+
+        <!-- UI -->
         <div id="ui-bar">
             <span id="score">Score: 0</span>
+            <span id="tries">Tries left: 3</span>
             <button id="hint-btn">Hint</button>
         </div>
 
@@ -50,8 +50,9 @@
 
     <!-- End Screen -->
     <div id="end-screen" class="screen">
-        <h2>Adventure Complete!</h2>
-        <p id="final-score">Score: 0</p>
+        <h2>Game Over</h2>
+        <p id="final-score"></p>
+        <p id="final-correct"></p>
         <button id="restart-btn">Play Again</button>
     </div>
 
