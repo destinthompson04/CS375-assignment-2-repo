@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Study Adventure Game</title>
+    <link rel="stylesheet" href="Interactive-Study-Adventure-Game-Style.css">
+</head>
+<body>
+
+<h1>Study Adventure Game</h1>
+
+<!-- Main Menu Screen -->
+<section id="menuScreen">
+    <h2>Select a Category</h2>
+    <button onclick="chooseCategory('math')">Math</button>
+    <button onclick="chooseCategory('reading')">Reading</button>
+    <button onclick="chooseCategory('sustainability')">Sustainability</button>
+</section>
+
+<!-- Level Screen -->
+<section id="levelScreen" style="display:none;">
+    <h2>Select Level</h2>
+    <button onclick="startGame('easy')">Easy</button>
+    <button onclick="startGame('medium')">Medium</button>
+    <button onclick="startGame('hard')">Hard</button>
+    <br><br>
+    <button onclick="goToMenu()">Back</button>
+</section>
+
+<!-- Game Screen -->
+<section id="gameScreen" style="display:none;">
+    <p id="scoreText">Score: 0</p>
+    <p id="storyText"></p>
+    <p id="questionText"></p>
+
+    <input type="text" id="answerInput" placeholder="Enter answer">
+
+    <br><br>
+
+    <button onclick="checkAnswer()">Submit</button>
+    <button onclick="showHint()">Hint</button>
+
+    <p id="feedback"></p>
+    <p id="hintText"></p>
+
+    <p id="timerText"></p> <!-- ADD THIS for timer -->
+
+    <br>
+    <button onclick="goToMenu()">Back to Menu</button>
+</section>
+
+<script src="Interactive-Study-Adventure-Game-Script.js"></script>
+
+</body>
+</html>
