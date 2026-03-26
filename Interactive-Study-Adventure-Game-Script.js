@@ -1,5 +1,7 @@
+
+localStorage.removeItem("highScore");
 const mathEasyQuestions = [  // Easy Level Math Questions Array
-     { question: "2 + 2", answer: "4", hint: "Start at 2 and count up 2 more." },
+    { question: "2 + 2", answer: "4", hint: "Start at 2 and count up 2 more." },
     { question: "5 * 3", answer: "15", hint: "Think of 5 + 5 + 5." },
     { question: "10 - 6", answer: "4", hint: "Start at 10 and count back 6 steps." },
     { question: "9 / 3", answer: "3", hint: "How many groups of 3 fit into 9?" },
@@ -107,38 +109,126 @@ const readingHardQuestions = [ // Hard Level Reading Questions Array
             { question: "What kind of person is Ava?", answers: ["kind", "helpful", "caring", "compassionate"], hint: "She helped someone." },
             { question: "What was the result?", answers: ["owner was thankful", "the owner was thankful", "owner was happy", "the owner was happy", "owner thanked her", "the owner thanked her", "owner was very thankful", "the owner was very thankful"], hint: "Someone appreciated her help." }
         ]
+    },
+    {
+        story: "Ethan was given a challenging group project at school. At first, his team argued and could not agree on what to do. Ethan decided to listen to everyone's ideas and helped organize a plan. In the end, the group worked together and earned a high grade.",
+        questions: [
+            { question: "What problem did Ethan's group have at the beginning?", answers: ["they argued", "his team argued", "the team argued", "ethan's team argued", "the group argued", "they could not agree", "they couldn't agree", "the team could not agree", "the team couldn't agree", "they argued and could not agree", "they argued and couldn't agree", "his team argued and could not agree", "his team argued and couldn't agree", "ethan's team argued and could not agree", "ethan's team argued and couldn't agree"], hint: "They did not work well together at first." },
+            { question: "What did Ethan do to fix the problem?", answers: ["he listened", "ethan listened", "he listened to everyone", "ethan listened to everyone", "he listened to everyone's ideas", "ethan listened to everyone's ideas", "he helped organize a plan", "ethan helped organize a plan", "he listened and organized a plan", "ethan listened and organized a plan"], hint: "He paid attention to others and made a plan." },
+            { question: "What happened at the end?", answers: ["they worked together", "the group worked together", "they worked together and got a high grade", "the group worked together and got a high grade", "they earned a high grade", "the group earned a high grade", "they succeeded", "the group succeeded"], hint: "Think about teamwork and success." },
+            { question: "What is the main lesson of the story?", answers: ["teamwork", "the importance of teamwork", "working together", "to work together", "communication", "listening to others", "to listen to others", "the importance of listening"], hint: "Working well with others leads to success." }
+        ]
     }
 ];
 
-const sustainabilityEasy = [ // Easy Level Sustainability Questions Array
-    { question: "What does recycling mean?", answer: "reuse", hint: "To use again." }
+// Easy Level Sustainabiliity Questions Array (True/False style)
+const sustainabilityEasy = [
+    {
+        question: "Turning off lights when leaving a room conserves energy.",
+        options: ["True", "False", "Not Sure"],
+        correct: 0
+    },
+    {
+        question: "Recycling helps reduce landfill waste.",
+        options: ["True", "False", "Not Sure"],
+        correct: 0
+    },
+    {
+        question: "Watering plants in the middle of the day is the most water-efficient.",
+        options: ["True", "False", "Not Sure"],
+        correct: 1
+    },
+    {
+        question: "Keeping blinds closed during the hottest parts of the day to limit excess heat in the summer is a way to conserve energy.",
+        options: ["True", "False", "Not Sure"],
+        correct: 0
+    }
 ];
 
-const sustainabilityMedium = [ // Medium Level Sustainability Questions Array
-    { question: "What is pollution?", answer: "dirty environment", hint: "Harms nature." }
+// Medium Level Sustainabiliity Questions Array (3 options)
+const sustainabilityMedium = [
+    {
+        question: "Which of the following is a renewable energy source?",
+        options: ["Coal", "Solar", "Oil"],
+        correct: 1
+    },
+    {
+        question: "Which of these actions helps conserve water?",
+        options: ["Fix leaks", "Leave tap running", "Overwater plants"],
+        correct: 0
+    },
+    {
+        question: "Which material is biodegradable?",
+        options: ["Plastic", "Paper", "Styrofoam"],
+        correct: 1
+    },
+    {
+        question: "Which energy source produces the least greenhouse gas?",
+        options: ["Natural Gas", "Coal", "Wind"],
+        correct: 2
+    }
 ];
 
-const sustainabilityHard = [ // Hard Level Sustainability Questions Array
-    { question: "What is renewable energy?", answer: "doesnt run out", hint: "Like solar power." }
+// Hard Level Sustainabiliity Questions Array (3 options)
+const sustainabilityHard = [
+    {
+        question: "Which material is biodegradable?",
+        options: ["Plastic", "Paper", "Glass"],
+        correct: 1
+    },
+    {
+        question: "Recycling helps reduce landfill waste.",
+        options: ["True", "False", "Not Sure"],
+        correct: 0
+    },
+    {
+        question: "Which of the following is a is renewable energy source?",
+        options: ["Coal", "Gas", "Solar"],
+        correct: 2
+    },
+    {
+        question: "Turning off lights when not in a room conserves energy.",
+        options: ["True", "False", "Not Sure"],
+        correct: 0
+    }
 ];
 
-// Game Variables:
-// MATH SECTION:
-let currentLevel = "easy";
-let questions = mathEasyQuestions;
+// ----- GAME VARIABLES -----
+let currentLevel = "";
+let questions = [];
 let currentQuestionIndex = 0;
 let score = 0;
-let highScore = localStorage.getItem("highScore") || 0; // High Score
+let highScore = Number(localStorage.getItem("highScore")) || 0; // Reset High Score
 // Timer for Hard Mode:
 let timer;  // stores setInterval reference
 let timeLeft = 15; // seconds per question
-
-// READING/SUSTAINABILITY SECTION:
 let readingMode = false;
 let sustainabilityMode = false;
-let currentPassageIndex = 0;
+let answered = false;
+let correctIndex = -1;
+let currentStory = "";
 
-// 'Choose a Category' Selection:
+// ----- TEMPORARY FEEDBACK FUNCTION -----
+function showTempFeedback(message) {
+    var feedbackEl = document.getElementById("feedback");
+    feedbackEl.textContent = message;
+
+    setTimeout(function() { // Remove message after 2 seconds
+        feedbackEl.textContent = "";
+    }, 2000);
+}
+
+// ----- CLEAR SCREEN FUNCTION ----- 
+function clearScreenForNextQuestion() {
+    document.getElementById("questionText").textContent = "";
+    document.getElementById("storyText").textContent = "";
+    document.getElementById("optionsContainer").innerHTML = "";
+    document.getElementById("answerInput").value = "";
+    document.getElementById("feedback").textContent = "";
+    document.getElementById("timerText").textContent = "";
+}
+
+// ----- 'CHOOSE A CATEGORY' SECTION -----
 function chooseCategory(category) {
     readingMode = false;
     sustainabilityMode = false;
@@ -153,133 +243,195 @@ function chooseCategory(category) {
     document.getElementById("levelScreen").style.display = "block";
 }
 
-// Timer Function - for Math:
+// ----- TIMER (FOR HARD LEVELS) -----
 function startTimer() {
     clearInterval(timer);
-    timeLeft = 15; // seconds per question
-    document.getElementById("timerText").textContent = "Time: " + timeLeft + "s";
-    const feedback = document.getElementById("feedback");
+    timeLeft = 15;
 
-    timer = setInterval(function() {
+    document.getElementById("timerText").textContent = "Time: " + timeLeft;
+
+    timer = setInterval(function () {
         timeLeft--;
-        document.getElementById("timerText").textContent = "Time: " + timeLeft + "s";
+        document.getElementById("timerText").textContent = "Time: " + timeLeft;
 
         if (timeLeft <= 0) {
             clearInterval(timer);
-            feedback.textContent = "Time's up! Moving to next question.";
+            document.getElementById("feedback").textContent = "Time's up!";
             moveToNextQuestion();
         }
     }, 1000);
 }
 
-function moveToNextQuestion() {
-    currentQuestionIndex++;
 
-    // If there are more questions,
-    if (currentQuestionIndex < questions.length) {
-        loadQuestion();
-        document.getElementById("answerInput").value = "";
-    } else { // else, End of game
-        clearInterval(timer); // stop timer
-        const feedback = document.getElementById("feedback");
-        const hintText = document.getElementById("hintText");
-        const questionText = document.getElementById("questionText");
-        const answerInput = document.getElementById("answerInput");
-        const timerText = document.getElementById("timerText");
+// ----- LOAD QUESTION -----
+function loadQuestion() {
+    clearScreenForNextQuestion(); // clear old data
 
-        // Hide question and input
-        questionText.textContent = "";
-        answerInput.style.display = "none";
-        timerText.textContent = "";
-        hintText.textContent = "";
+    answered = false;
+    var q = questions[currentQuestionIndex];
 
-        // Hide buttons
+    document.getElementById("questionText").textContent = q.question || "";
+    
+    if (readingMode) {
+        if (q.story) {
+        // If we are in reading mode, keep the story as it is
+        document.getElementById("storyText").textContent = q.story;
+        } else {
+        // If not reading mode, clear the story text
+        document.getElementById("storyText").textContent = "";
+        }
+    } else {
+        document.getElementById("storyText").textContent = "";
+    }
+
+    document.getElementById("hintText").textContent = "";
+    document.getElementById("optionsContainer").innerHTML = "";
+    document.getElementById("answerInput").value = "";
+
+    // Sustainability buttons
+    if (sustainabilityMode) {
+        document.getElementById("answerInput").style.display = "none";
         document.getElementById("submitButton").style.display = "none";
         document.getElementById("hintButton").style.display = "none";
 
-        // Show final score
-        let finalMessage = "You finished all the questions! Final Score: " + score;
-        if (score > highScore) {
-            highScore = score;
-            localStorage.setItem("highScore", highScore);
-            finalMessage += " 🎉 New High Score!";
+        correctIndex = q.correct;
+
+        // Create MC buttons
+        for (let i = 0; i < q.options.length; i++) {
+            let btn = document.createElement("button");
+            btn.textContent = q.options[i];
+
+            btn.onclick = (function(index) {
+                return function () {
+                    checkMCAnswer(index);
+                };
+            })(i);
+
+            document.getElementById("optionsContainer").appendChild(btn);
         }
-        feedback.textContent = finalMessage;
-    }
-}
 
-// Load Question:
-function loadQuestion() {
-    const questionText = document.getElementById("questionText");
-    const hintText = document.getElementById("hintText");
-    const timerText = document.getElementById("timerText");
-
-    // Set the question text
-    if (readingMode || sustainabilityMode) {
-        questionText.textContent = questions[currentQuestionIndex].question || questions[currentQuestionIndex].questionText;
     } else {
-        questionText.textContent = questions[currentQuestionIndex].question;
+        document.getElementById("answerInput").style.display = "inline";
+        document.getElementById("submitButton").style.display = "inline";
+        document.getElementById("hintButton").style.display = "inline";
+        document.getElementById("hintButton").disabled = false;
     }
 
-    hintText.textContent = ""; // clear hint when new question loads
-
-    // Start timer for Hard mode in any category
+    // Timer
     if (currentLevel === "hard") {
         startTimer();
     } else {
         clearInterval(timer);
-        timerText.textContent = "";
+        document.getElementById("timerText").textContent = "";
     }
 }
 
-// Set Level:
+// ----- SHUFFLE ARRAY (FOR READING CATEGORY) -----
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        // Pick a random index from 0 to i
+        let j = Math.floor(Math.random() * (i + 1));
+
+        // Swap elements at i and j
+        let temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+    return array;
+}
+
+// ----- SET LEVEL -----
 function setLevel(level) {
     currentLevel = level;
     currentQuestionIndex = 0;
     score = 0;
-    updateScoreText();
+
     document.getElementById("feedback").textContent = "";
     document.getElementById("answerInput").value = "";
+    document.getElementById("answerInput").style.display = "inline";
+    document.getElementById("storyText").textContent = "";
 
-if (readingMode) { // reading mode
-        let passage;
+    
+    // Show/hide buttons appropriately
+    if (sustainabilityMode) {
+        document.getElementById("submitButton").style.display = "none";
+        document.getElementById("hintButton").style.display = "none";
+        document.getElementById("answerInput").style.display = "none";
+        document.getElementById("skipButton").style.display = "none";
+    } else {
+        document.getElementById("submitButton").style.display = "inline";
+        document.getElementById("hintButton").style.display = "inline";
+        document.getElementById("answerInput").style.display = "inline";
+        document.getElementById("skipButton").style.display = "inline";
+    }
+    
+    if (readingMode) { // reading section
+        let storyArray; // copies the array 
 
-        if (level === "easy") passage = readingEasyQuestions[0];
-        if (level === "medium") passage = readingMediumQuestions[0];
-        if (level === "hard") passage = readingHardQuestions[0];
+        if (level === "easy") {
+            storyArray = readingEasyQuestions.slice();
+        }
+        else if (level === "medium") {
+            storyArray = readingMediumQuestions.slice();
+        }
+        else if (level === "hard") {
+            storyArray = readingHardQuestions.slice();
+        }
 
-        questions = passage.questions;
-        document.getElementById("storyText").textContent = passage.story;
+        shuffleArray(storyArray); // shuffle the array of all stories
+
+        questions = []; // empty list
+
+    for (let i = 0; i < storyArray.length; i++) { // go through every story
+
+        let passage = storyArray[i];
+
+        // go through each question in that story
+        for (let j = 0; j < passage.questions.length; j++) {
+
+            let q = passage.questions[j];
+
+            questions.push({ // add question + story together
+                question: q.question,
+                answers: q.answers,
+                hint: q.hint,
+                story: passage.story
+            });
+        }
     }
 
-    else if (sustainabilityMode) { // sustainability mode
-        if (level === "easy") questions = sustainabilityEasy;
-        if (level === "medium") questions = sustainabilityMedium;
-        if (level === "hard") questions = sustainabilityHard;
+    }
+    else if (sustainabilityMode) { // sustainability section
 
-        document.getElementById("storyText").textContent = "";
+        if (level === "easy") {
+            questions = sustainabilityEasy;
+        }
+        else if (level === "medium") {
+            questions = sustainabilityMedium;
+        }
+        else if (level === "hard") {
+            questions = sustainabilityHard;
+        }
+
+    } 
+    else { // math section
+
+        if (level === "easy") {
+            questions = mathEasyQuestions;
+        }
+        else if (level === "medium") {
+            questions = mathMediumQuestions;
+        }
+        else if (level === "hard") {
+            questions = mathHardQuestions;
+        }
     }
 
-    else { // math mode
-        if (level === "easy") questions = mathEasyQuestions;
-        if (level === "medium") questions = mathMediumQuestions;
-        if (level === "hard") questions = mathHardQuestions;
-
-        document.getElementById("storyText").textContent = "";
-    }
-
-    score = 0; // reset score and feedback
     updateScoreText();
-    document.getElementById("feedback").textContent = "";
-    document.getElementById("answerInput").value = "";
-
-    clearInterval(timer); // Clear timer if any
-    document.getElementById("timerText").textContent = "";
-
-    loadQuestion(); // Load the first question
+    loadQuestion();
 }
 
-// Start Game (from Menu):
+// ----- START GAME -----
 function startGame(level) {
     setLevel(level);
 
@@ -287,127 +439,180 @@ function startGame(level) {
     document.getElementById("gameScreen").style.display = "block";
 }
 
-// Back to Menu:
+// ----- NEXT QUESTION -----
+function moveToNextQuestion() {
+    clearScreenForNextQuestion(); // clear everything on screen first before next question
+
+    clearInterval(timer);
+    currentQuestionIndex++;
+
+    if (currentQuestionIndex >= questions.length) {
+        endGame();
+        return;
+    }
+    loadQuestion();
+}
+
+// ----- END GAME -----
+function endGame() {
+    clearInterval(timer);
+
+    document.getElementById("questionText").textContent = "";
+    document.getElementById("answerInput").style.display = "none";
+    document.getElementById("timerText").textContent = "";
+    document.getElementById("hintText").textContent = "";
+    document.getElementById("optionsContainer").innerHTML = "";
+
+    document.getElementById("submitButton").style.display = "none";
+    document.getElementById("hintButton").style.display = "none";
+    document.getElementById("skipButton").style.display = "none"
+
+    // Update/set highscore 
+
+    if (score > highScore) {
+        highScore = score;
+        localStorage.setItem("highScore", highScore);
+    }
+
+    // Show highscore (score is already shown) 
+    document.getElementById("finalScore").textContent = "High Score: " + highScore;
+}
+
+
+// ----- CHECK ANSWER -----
+function checkAnswer() {
+    if (answered) {
+        return;
+    }
+
+    let userAnswer = document.getElementById("answerInput").value;
+
+    // make input lowercase + remove spaces
+    userAnswer = userAnswer.toLowerCase().trim();
+
+    if (userAnswer === "") {
+        showTempFeedback("Please enter an answer.");
+        return;
+    }
+
+    let correct = false;
+
+    if (readingMode) {
+        let answers = questions[currentQuestionIndex].answers;
+
+        // check all possible answers
+        for (let i = 0; i < answers.length; i++) {
+            let correctAnswer = answers[i].toLowerCase().trim();
+
+            if (userAnswer === correctAnswer) {
+                correct = true;
+            }
+        }
+
+    } else {
+        let correctAnswer = questions[currentQuestionIndex].answer.toLowerCase().trim();
+
+        if (userAnswer === correctAnswer) {
+            correct = true;
+        }
+    }
+
+    if (correct) {
+        answered = true;
+        score++;
+        updateScoreText();
+        showTempFeedback("Correct!");
+
+        setTimeout(function() {
+            moveToNextQuestion();
+        }, 1500); // 1.5 seconds
+
+    } else {
+        showTempFeedback("Wrong answer. Try using a hint.");
+    }
+}
+
+
+// ----- SKIP QUESTION -----
+function skipQuestion() {
+
+    clearScreenForNextQuestion();
+
+    answered = true; // Mark current question as answered
+
+    clearInterval(timer); // Stop the timer if running
+
+    showTempFeedback("Question skipped."); // Feedback to show skipping
+
+    moveToNextQuestion();
+}
+
+
+// ----- MULTIPLE CHOICE (MC) -----
+function checkMCAnswer(index) {
+    
+    clearInterval(timer); // Stop timer immediately when user clicks
+
+    var correctIndex = questions[currentQuestionIndex].correct;
+
+    if (index === correctIndex) {
+        score++;
+        updateScoreText();
+        showTempFeedback("Correct!");
+    } else {
+        showTempFeedback("Incorrect. The correct answer is: " + questions[currentQuestionIndex].options[correctIndex]);
+    }
+
+    // Wait 3 seconds before going to next question
+    setTimeout(function() {
+        moveToNextQuestion();  // move to next question
+        if (currentLevel === "hard") {
+            startTimer();  // restart 15-second timer for next question
+        }
+    }, 3000);
+}
+
+
+// ----- HINT -----
+function showHint() {
+    document.getElementById("hintText").textContent = questions[currentQuestionIndex].hint;
+    document.getElementById("hintButton").disabled = true;
+}
+
+// ----- SCORE -----
+function updateScoreText() {
+    document.getElementById("scoreText").textContent = "Score: " + score;
+}
+
+// ----- MENU -----
 function goToMenu() {
     document.getElementById("menuScreen").style.display = "block";
     document.getElementById("levelScreen").style.display = "none";
     document.getElementById("gameScreen").style.display = "none";
 
     clearInterval(timer);
+
+    document.getElementById("questionText").textContent = "";
+    document.getElementById("storyText").textContent = ""; 
     document.getElementById("feedback").textContent = "";
     document.getElementById("hintText").textContent = "";
+    document.getElementById("optionsContainer").innerHTML = "";
     document.getElementById("answerInput").value = "";
-    document.getElementById("timerText").textContent = "";
+    document.getElementById("finalScore").textContent = "";
+
+    // reset modes
+    readingMode = false;
+    sustainabilityMode = false;
 }
 
-// Check answer:
-function checkAnswer() {
-    const userInput = document.getElementById("answerInput");
-    const userAnswer = userInput.value.trim().toLowerCase(); // trim spaces and lowercase
-    const feedback = document.getElementById("feedback");
-
-    // input validation:
-    if (userAnswer === "") { // if user does NOT enter anything in input
-        feedback.textContent = "Please enter an answer.";
-        return;
-    }
-
-    let isCorrect = false;
-
-    if (readingMode) {
-        // Reading questions: may have multiple acceptable answers (array)
-        const correctAnswers = questions[currentQuestionIndex].answers || [questions[currentQuestionIndex].answer];
-        // Check if user's input matches any correct answer (case-INsensitive)
-        for (let i = 0; i < correctAnswers.length; i++) {
-            if (userAnswer === correctAnswers[i].toLowerCase()) { // lowercase user's input
-                isCorrect = true;
-                break;
-            }
-        }
-    } else {
-        // Math or sustainability questions: single answer string
-        const correctAnswer = questions[currentQuestionIndex].answer.toLowerCase(); // lowercase user's input
-        if (userAnswer === correctAnswer) {
-            isCorrect = true;
-        }
-    }
-
-    if (isCorrect) { // if user enters the CORRECT answer
-            score++;
-            updateScoreText();
-
-        // If at the last question 
-        if (currentQuestionIndex === questions.length - 1) {
-            // End of Game: Hide question, hint and submit buttons, hint text, and timer
-            document.getElementById("questionText").textContent = "";
-            userInput.style.display = "none";
-            document.getElementById("submitButton").style.display = "none";
-            document.getElementById("hintButton").style.display = "none";
-            document.getElementById("hintText").textContent = "";
-            document.getElementById("timerText").textContent = "";
-            
-            // Show final score (and high score if beaten)
-            let finalMessage = "You finished all the questions! Final Score: " + score;
-            if (score > highScore) {
-                highScore = score;
-                localStorage.setItem("highScore", highScore);
-                finalMessage += " 🎉 New High Score!";
-            }
-            feedback.textContent = finalMessage;
-            return; // STOP here, do NOT continue to next question
-        }
-
-        // Not last question: move to next
-        currentQuestionIndex++;
-        userInput.value = "";
-        feedback.textContent = "Correct!";
-        loadQuestion();
-
-    } else { // else, if user enters the WRONG answer
-        feedback.textContent = "Wrong answer. Try again or use a hint.";
-    }
-}
-
-// Hint function:
-function showHint() {
-    const hintText = document.getElementById("hintText");
-    hintText.textContent = questions[currentQuestionIndex].hint;
-}
-
-// Update Score Text:
-function updateScoreText() {
-    let scoreText = document.getElementById("scoreText");
-    if (!scoreText) { // If scoreText doesn't exist yet, create it above the question
-        const gameScreen = document.getElementById("gameScreen");
-        const p = document.createElement("p");
-        p.id = "scoreText";
-        p.textContent = "Score: " + score;
-        gameScreen.insertBefore(p, document.getElementById("questionText"));
-    } else {
-        scoreText.textContent = "Score: " + score;
-    }
-}
-
-// Event Listeners for Submit, Hint, and Enter Key 
+// ----- ENTER KEY (FOR SUBMIT BUTTON)-----
 document.addEventListener("DOMContentLoaded", function () {
-    const answerInput = document.getElementById("answerInput");
-    const submitButton = document.getElementById("submitButton");
-    const hintButton = document.getElementById("hintButton");
+    var input = document.getElementById("answerInput");
 
-    // Submit button click
-    submitButton.addEventListener("click", function() {
-        checkAnswer();
-    });
-
-    // Hint button click
-    hintButton.addEventListener("click", function() {
-        showHint();
-    });
-
-    // Enter key press
-    answerInput.addEventListener("keypress", function(event) {
+    input.addEventListener("keypress", function (event) {
         if (event.key === "Enter") {
             checkAnswer();
         }
     });
 });
+
