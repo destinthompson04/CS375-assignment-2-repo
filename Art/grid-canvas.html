@@ -18,6 +18,9 @@
         .grid-cell:hover {
             filter: brightness(.75);
         }
+        .grid-cell {
+            border: 1px solid #cccccc;
+        }
     </style>
 </head>
 <body>
@@ -66,14 +69,12 @@
                             gridState[x][y] = 0;
                             console.log(`gridState[${x}][${y}] = 0;`);
                         }
-                        // console.table(gridState); // Show the 2D array in console
-
                     });
 
                     container.appendChild(cell);
                 }
             }
-            
+            console.table(gridState); // Show the 2D array in console
             return gridState;
         }
 
@@ -82,15 +83,18 @@
         const btn = document.querySelector('button');
 
         btn.addEventListener('click', () => {
-            let stringArray = new String('');
+            let stringArrayX = new String('');
+            let stringArrayY = new String('');
             for (let y = 0; y < 16; y++) { 
                 for (let x = 0; x < 16; x++) { 
                     if(myGameLogic[x][y] == 1) {
-                        stringArray = stringArray + `[${x}][${y}],`;
+                        stringArrayX = stringArrayX + `${x}, `;
+                        stringArrayY = stringArrayY + `${y}, `;
                     }
                 }
             }
-            console.log(myGameLogic);
+            alert("X and Y locations in console");
+            console.log("let drawingX = [" + stringArrayX + ']\n' + "let drawingY = [" + stringArrayY + ']');
         });
     </script>
 </body>

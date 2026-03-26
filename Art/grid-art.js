@@ -1,4 +1,4 @@
-function createGrid(rows, cols) {
+function createGrid(rows, cols, drawing) {
   const container = document.querySelector("#grid");
   container.innerHTML = ""; // Clear existing content
 
@@ -10,9 +10,18 @@ function createGrid(rows, cols) {
   // Initialize the 2D logic array
   // This maps the visual DOM to a data structure
 
-  const gridState = Array(rows)
+  let gridState = Array(rows)
     .fill(null)
     .map(() => Array(cols).fill(0));
+
+  // for (let cord = 0; cord < drawingX.length; cord++) {
+  //   gridState[drawingX[cord]][drawingY[cord]] = 1;
+  // }
+
+  for (let cord = 0; cord < drawing.length; cord++) {
+    gridbox = drawing[cord];
+    gridState[gridbox[0]][gridbox[1]] = 1;
+  }
 
   for (let y = 0; y < rows; y++) {
     //let vs var
@@ -25,25 +34,18 @@ function createGrid(rows, cols) {
       cell.dataset.x = x;
       cell.dataset.y = y;
 
-      // // Visual feedback and state update
-      // cell.addEventListener("click", () => {
-      //   // Update the logic array (1 = occupied/clicked)
-      //   if (gridState[x][y] == 0) {
-      //     // Toggle visual state
-      //     cell.style.backgroundColor = "black";
-      //     gridState[x][y] = 1;
-      //     console.log(`gridState[${x}][${y}] = 1;`);
-      //   } else {
-      //     // Untoggle visual state
-      //     cell.style.backgroundColor = "white";
-      //     gridState[x][y] = 0;
-      //     console.log(`gridState[${x}][${y}] = 0;`);
-      //   }
-      //   // console.table(gridState); // Show the 2D array in console
-      // });
+      if (gridState[x][y] == 1) {
+        // Toggle visual state
+        cell.style.backgroundColor = "black";
+      } else {
+        // Untoggle visual state
+        cell.style.backgroundColor = "white";
+      }
 
       container.appendChild(cell);
     }
   }
+
+  console.table(gridState); // Show the 2D array in console
   return gridState;
 }

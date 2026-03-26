@@ -6,11 +6,19 @@
     <title>Art Inplementation</title>
     <script src="grid-art.js"></script>
     <link rel="stylesheet" href="grid.css" />
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
 </head>
 <body>
     <div id="grid"></div>
     <script>
-        const myGameLogic = createGrid(16, 16);
+        let Smile = [[6,3],[9,3],[6,4],[9,4],[6,5],[9,5],[4,8],[11,8],[5,9],[6,9],[7,9],[8,9],[9,9],[10,9]];
+        let myGameLogic = createGrid(16, 16, Smile);
     </script>
 </body>
 </html
