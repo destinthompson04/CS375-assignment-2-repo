@@ -4,7 +4,7 @@ function createGrid(rows, cols, drawing) {
 
   // Set container to grid layout
   container.style.display = "grid";
-  container.style.gridTemplateColumns = `repeat(${cols}, 16px)`;
+  container.style.gridTemplateColumns = `repeat(${cols}, 10px)`;
   container.style.gap = "0px";
 
   // Initialize the 2D logic array
@@ -30,7 +30,7 @@ function createGrid(rows, cols, drawing) {
       cell.dataset.x = x;
       cell.dataset.y = y;
 
-      if (gridState[y][x] == 1) {
+      if (gridState[x][y] == 1) {
         // Toggle visual state
         cell.style.backgroundColor = "black";
       } else {
