@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quizzard Adventure</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="game-container">
+
+    <!-- Start Screen -->
+    <div id="start-screen" class="screen active">
+        <h1>🧙 Quizzard Adventure</h1>
+        <button id="start-btn">Start Game</button>
+    </div>
+
+    <!-- Difficulty Screen -->
+    <div id="difficulty-screen" class="screen">
+        <h2>Select Difficulty</h2>
+        <button class="difficulty-btn" data-level="easy">Easy</button>
+        <button class="difficulty-btn" data-level="medium">Medium</button>
+        <button class="difficulty-btn" data-level="hard">Hard</button>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="game-screen" class="screen">
+
+        <!-- Progress Bar -->
+        <div id="progress-container">
+            <div id="progress-bar"></div>
+        </div>
+
+        <p id="progress-text">Question 1 / 5</p>
+
+        <!-- Question -->
+        <h2 id="question">Question goes here</h2>
+
+        <!-- Answers -->
+        <div id="answers"></div>
+
+        <!-- UI -->
+        <div id="ui-bar">
+            <span id="score">Score: 0</span>
+            <span id="tries">Tries left: 3</span>
+            <button id="hint-btn">Hint</button>
+        </div>
+
+    </div>
+
+    <!-- End Screen -->
+    <div id="end-screen" class="screen">
+        <h2>Game Over</h2>
+        <p id="final-score"></p>
+        <p id="final-correct"></p>
+        <button id="restart-btn">Play Again</button>
+    </div>
+
+</div>
+
+<script type="module" src="script.js"></script>
+</body>
+</html>
